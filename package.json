@@ -2,6 +2,9 @@
   "name": "stories",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "10.16.2",
+  "npm":"6.9.0"},
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
