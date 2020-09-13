@@ -12,6 +12,7 @@ class Login extends Component{
 			username:'',
 			password:'',
       errors:{},
+      msg:''
 		};
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit =this.onSubmit.bind(this);
@@ -46,7 +47,7 @@ class Login extends Component{
               this.setState({isloggedin:true})
             })
             .catch(err => {console.log(err.response.data)
-            this.setState({isloggedin:false})
+            this.setState({isloggedin:false, msg:err.response.data.msg})
           })
       }
     render(){
@@ -70,6 +71,7 @@ class Login extends Component{
                   type="email"
                   value={this.state.username}
                   onChange={this.onChange}
+                  style={{width:'50%'}}
                 />
                 </div>
                 <div className="form-group">
@@ -78,10 +80,12 @@ class Login extends Component{
                   name="password"
                   type="password"
                   value={this.state.password}
-                  onChange={this.onChange}                  
+                  onChange={this.onChange}
+                  style={{width:'50%'}}                  
                 />
                 </div>
             <input type="submit" className="btn btn-info btn-block mt-4" />
+            <p style={{textAlign:'center', color:'red'}}><b>{this.state.msg}</b></p>
           </form>
         </div>
       </div>

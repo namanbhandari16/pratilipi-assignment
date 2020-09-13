@@ -39,10 +39,12 @@ router.put('/readby',async (req,res)=>{
 router.put('/addreader', async (req,res)=>{
     let st    
     st = await Story.findById(req.body.post)
-    console.log('user'+req.body.user)
-    st.currentreader.addToSet(req.body.user)
+    //console.log('user'+req.body.user+'  post:   '+req.body.post)
+    try{st.currentreader.unshift(req.body.user)}
+    catch(e){console.log(e)}
     var current= st.currentreader.length
     const people=st.currentreader
+    //console.log('people:    '+people)
     await st.save();
     res.json({currentreader:current, people:people})
 });

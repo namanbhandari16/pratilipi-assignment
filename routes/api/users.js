@@ -22,7 +22,7 @@ if(!isValid){
 .then(user =>{
 	if(user){//if user found then email already exists
 		//errors.email="User already exists";
-		return res.status(400).json({username:'User already exists'});
+		return res.status(400).json({msg:'User already exists'});
 	}
 	else {
 		const newUser=new User({
@@ -88,7 +88,7 @@ router.post('/login', (req, res) => {
         //return res.status(200).json({msg:'User logged in'});
         } else {
           //errors.password = 'Password incorrect';
-            return res.status(400).json({passwod:'Password Incorrect'});
+            return res.status(400).json({msg:'Password Incorrect'});
         }
       });
     });

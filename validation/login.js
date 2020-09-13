@@ -6,13 +6,16 @@ module.exports= function validateInput(data){
 	data.password 	= !isEmpty(data.password) 	? data.password: '';
 
 	if(validator.isEmpty(data.username)){
-		errors.username='Username is required';
+		errors.msg='Username is required';
 	}
 	else if(!validator.isEmail(data.username)){
-		errors.username='Invalid email';
+		errors.msg='Invalid email';
 	}
-	if(validator.isEmpty(data.password)){
-		errors.password='password field is required';
+	else if(validator.isEmpty(data.password)){
+		errors.msg='password field is required';
+	}
+	else if(data.password.length<7 ||data.password.length>11){
+		errors.msg='password should be between 6 and 10';
 	}
 	return{
 		errors:errors,

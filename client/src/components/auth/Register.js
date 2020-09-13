@@ -8,7 +8,8 @@ class Register extends Component{
 		this.state={
 			username:'',
 			password:'',
-			errors:{}
+            errors:{},
+            msg:''
 		};
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit =this.onSubmit.bind(this);
@@ -23,10 +24,12 @@ class Register extends Component{
           password: this.state.password,
         };             
         console.log(newUser)
-        axios.post('/api/users/register', newUser)
+        axios.post('http://localhost:5000/api/users/register', newUser)
     	.then(res => this.setState({reg:true}))
     	.catch(err => 
-    		console.log(err)
+            {console.log(err.response.data)
+            this.setState({msg:err.response.data.msg})
+        }
     );
         }
     render(){if(this.state.reg){
@@ -47,22 +50,23 @@ class Register extends Component{
                   type="email"
                   value={this.state.username}
                   onChange={this.onChange}
-                  //error={errors.email}
+                  style={{width:'50%'}}
                 />
                 </div>
                 <div className="form-group">
             <input
-                  placeholder="Password"
+                  placeholder="Password (betwen 6 and 10 characters)"
                   name="password"
                   type="password"
                   value={this.state.password}
                   onChange={this.onChange}
-                  //error={errors.password}
+                  style={{width:'50%'}}
                   
                 />
                 </div>
             <input type="submit" className="btn btn-info btn-block mt-4" />
             <p style={{textAlign:'center'}}>Already on Stories?<Link style={{color:'#2977c9'}} className="nav-link" to="/login">Login </Link></p>
+         <p style={{textAlign:'center', color:'red'}}><b>{this.state.msg}</b></p>
           </form>
         </div>
       </div>
