@@ -17,28 +17,44 @@ class Read extends Component{
         this.remreader=this.remreader.bind(this)
     }
     addReader(){
-        const decoded = jwt_decode(localStorage.jwtToken);
             const readby={
-                user:decoded.userid,
+                user:this.state.userid,
                 post:this.state.postid
             }
+            console.log('readby'+readby.user)
+            console.log(this.state.userid)
             axios.put('/api/stories/addreader',readby)
             .then(current=>{
                 this.setState({currentreader:current.data.currentreader})
-                console.log(this.state)
+                this.setState({people:current.data.people})
+                console.log(this.state.people)
             })
     }
     remreader(){
-        const decoded = jwt_decode(localStorage.jwtToken);
-            const readby={
-                user:decoded.userid,
-                post:this.state.postid
-            }
+        const readby={
+            user:this.state.userid,
+            post:this.state.postid
+        }
+        console.log('readby'+readby.user)
+        console.log(this.state.userid)
+        axios.put('/api/stories/remreader',readby)
+        .then(current=>{
+            this.setState({currentreader:current.data.currentreader})
+            this.setState({people:current.data.people})
+            console.log(this.state.people)
+        })
+    }
+    remreader1(){
+        const readby={
+            user:this.state.userid,
+            post:this.state.postid
+        }
+        return new Promise(function (resolve, reject) { 
             axios.put('/api/stories/remreader',readby)
             .then(current=>{
-                this.setState({currentreader:current.data.currentreader})
-                console.log(this.state)
+            return current.data.people
             })
+        });
     }
     handleVisibilityChange(){
         if(document.hidden){
@@ -71,21 +87,10 @@ class Read extends Component{
         }
         
     }
-     componentWillUnmount(){
-         //this.remreader()
-       
-        //const decoded = jwt_decode(localStorage.jwtToken);
-            const readby={
-                user:this.state.userid,
-                post:this.state.id
-            }
-            axios.put('/api/stories/remreader',readby)
-            .then(current=>{
-                this.setState({currentreader:current.data.currentreader})
-                console.log(this.state)
-            })
+     async componentWillUnmount(){
+         
+            var res = await this.remreader1();
         document.removeEventListener("visibilitychange", this.handleVisibilityChange)
-        console.log('unmount')
     }
     render(){
         if(!isloggedin())
@@ -94,6 +99,7 @@ class Read extends Component{
             <h3 className="text-center">{this.state.title}</h3>
             {this.state.count && <h4 className="text-center">Total reads: {this.state.count} users</h4>}
             {this.state.currentreader && <h4 className="text-center">Currently read by {this.state.currentreader} users</h4>}
+            {/* {this.state.people} */}
             <p className="text-left p-2 mt-4" style={{"whiteSpace": "pre-line"}}>{this.state.post}</p>
         </div>
         );

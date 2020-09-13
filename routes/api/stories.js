@@ -39,17 +39,20 @@ router.put('/readby',async (req,res)=>{
 router.put('/addreader', async (req,res)=>{
     let st    
     st = await Story.findById(req.body.post)
+    console.log('user'+req.body.user)
     st.currentreader.addToSet(req.body.user)
     var current= st.currentreader.length
+    const people=st.currentreader
     await st.save();
-    res.json({currentreader:current})
+    res.json({currentreader:current, people:people})
 });
 router.put('/remreader', async (req,res)=>{
     let st    
     st = await Story.findById(req.body.post)
     st.currentreader.pull(req.body.user)
     var current= st.currentreader.length
+    const people=st.currentreader
     await st.save();
-    res.json({currentreader:current})
+    res.json({currentreader:current,people:people})
 });
 module.exports=router;
